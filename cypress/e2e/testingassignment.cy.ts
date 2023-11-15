@@ -16,9 +16,26 @@ describe("search movies app", () => {
   });
 
   it("should show one movie", () => {
-    cy.intercept("https://medieinstitutet-wie-products.azurewebsites.net/*", {
-      name: "The Hunger Games",
-      imageUrl: "http://randomimage.png",
-    });
+    cy.intercept(
+      "https://medieinstitutet-wie-products.azurewebsites.net/api/*",
+      [
+        {
+          name: "The Hunger Games",
+          imageUrl: "http://randomimage.png",
+        },
+      ]
+    );
+
+    cy.get("input#searchText").type("star");
+    cy.get("form button").contains("Sök").click();
+    cy.get("section#searchresult > div.movie").should("have.length", 1);
+    cy.get("section#searchresult > div.movie > h3.movie__title").contains(
+      "The Hunger Games"
+    );
+    cy.get("section#searchresult > div.movie > div.movie__image > img").should(
+      "have.attr",
+      "src",
+      "http://randomimage.png"
+    );
   });
 });
