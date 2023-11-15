@@ -21,7 +21,8 @@ describe("search movies app", () => {
       [
         {
           name: "The Hunger Games",
-          imageUrl: "http://randomimage.png",
+          imageUrl:
+            "https://m.media-amazon.com/images/M/MV5BMjA4NDg3NzYxMF5BMl5BanBnXkFtZTcwNTgyNzkyNw@@._V1_.jpg",
         },
       ]
     );
@@ -35,7 +36,19 @@ describe("search movies app", () => {
     cy.get("section#searchresult > div.movie > div.movie__image > img").should(
       "have.attr",
       "src",
-      "http://randomimage.png"
+      "https://m.media-amazon.com/images/M/MV5BMjA4NDg3NzYxMF5BMl5BanBnXkFtZTcwNTgyNzkyNw@@._V1_.jpg"
     );
+  });
+
+  //Den här nedan känns lite oklar? finns ju inte typ response = false?
+  it("should not show movies if no result is found", () => {
+    cy.intercept(
+      "https://medieinstitutet-wie-products.azurewebsites.net/api/*",
+      []
+    );
+
+    cy.get("input#searchText").type("star");
+    cy.get("form button").contains("Sök").click();
+    cy.get("section#searchresult > p").contains("Inga sökresultat att visa");
   });
 });

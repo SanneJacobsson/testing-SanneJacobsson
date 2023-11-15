@@ -6,14 +6,14 @@ export const getProducts = async (searchText: string) => {
     const response = await axios.get<IProduct[]>(
       `https://medieinstitutet-wie-products.azurewebsites.net/api/search?searchtext=${searchText}`
     );
+    console.log(response.data);
 
     if (response.status === 200) {
-      return response.data;      
+      return response.data;
     }
 
     return [];
   } catch (err) {
     throw err;
   }
-  
 };
