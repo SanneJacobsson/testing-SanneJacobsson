@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "cypress": "^13.5.1",
     "sass": "^1.69.5",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
