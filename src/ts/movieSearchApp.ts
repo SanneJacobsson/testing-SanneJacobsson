@@ -25,6 +25,7 @@ const handleSearch = async () => {
     "searchresult"
   ) as HTMLDivElement;
 
+  //varför ligger den här här?
   container.innerHTML = "";
 
   try {
@@ -41,6 +42,7 @@ const handleSearch = async () => {
   } catch {
     displayNoResult(container);
   }
+
   const sortButton = document.getElementById("sort") as HTMLButtonElement;
   sortButton.addEventListener("click", () => {
     productSort(products, (desc = !desc));
@@ -49,6 +51,8 @@ const handleSearch = async () => {
 };
 
 export const createHtml = (products: IProduct[], container: HTMLDivElement) => {
+  container.innerHTML = "";
+
   for (let i = 0; i < products.length; i++) {
     let movie = document.createElement("div");
     let title = document.createElement("h3");
