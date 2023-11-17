@@ -3,7 +3,7 @@ describe("search movies app", () => {
     cy.visit("http://localhost:5173/");
   });
 
-  it("should have a form", () => {
+  it("should have an existing form", () => {
     cy.get("form#searchform").should("exist");
     cy.get("form input#searchText").should("exist");
     cy.get("form button").contains("Sök").should("exist");
@@ -48,6 +48,15 @@ describe("search movies app", () => {
     );
 
     cy.get("input#searchText").type("blabla");
+    cy.get("form button").contains("Sök").click();
+    cy.get("section#searchresult > p").contains("Inga sökresultat att visa");
+  });
+
+  it("should not search movies if text is less than two characters", () => {
+    cy.get("form button").contains("Sök").click();
+    cy.get("section#searchresult > p").contains("Inga sökresultat att visa");
+
+    cy.get("input#searchText").type("t");
     cy.get("form button").contains("Sök").click();
     cy.get("section#searchresult > p").contains("Inga sökresultat att visa");
   });
