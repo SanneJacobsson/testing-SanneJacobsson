@@ -25,7 +25,6 @@ const handleSearch = async () => {
     "searchresult"
   ) as HTMLDivElement;
 
-  //varför ligger den här här?
   container.innerHTML = "";
 
   try {

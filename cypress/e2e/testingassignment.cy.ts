@@ -6,7 +6,8 @@ describe("search movies app", () => {
   it("should have a form", () => {
     cy.get("form#searchform").should("exist");
     cy.get("form input#searchText").should("exist");
-    cy.get("form button").contains("Sök");
+    cy.get("form button").contains("Sök").should("exist");
+    cy.get("form button#sort").contains("Sortera").should("exist");
   });
 
   it("should search and show movies", () => {
@@ -40,15 +41,45 @@ describe("search movies app", () => {
     );
   });
 
-  //Den här nedan känns lite oklar? finns ju inte typ response = false?
   it("should not show movies if no result is found", () => {
     cy.intercept(
       "https://medieinstitutet-wie-products.azurewebsites.net/api/*",
       []
     );
 
-    cy.get("input#searchText").type("star");
+    cy.get("input#searchText").type("blabla");
     cy.get("form button").contains("Sök").click();
     cy.get("section#searchresult > p").contains("Inga sökresultat att visa");
+  });
+
+  it("should sort movies by name", () => {
+    cy.intercept(
+      "https://medieinstitutet-wie-products.azurewebsites.net/api/*",
+      [
+        {
+          name: "tttt",
+          imageUrl: "https://randomimage.png",
+        },
+        {
+          name: "aaa",
+          imageUrl: "https://randomimage.png",
+        },
+        {
+          name: "mmm",
+          imageUrl: "https://randomimage.png",
+        },
+      ]
+    );
+
+    cy.get("input#searchText").type("star");
+    cy.get("form button").contains("Sök").click();
+    cy.get("form button#sort").contains("Sortera").click();
+    cy.get("section#searchresult > div.movie > h3.movie__title")
+      .first()
+      .contains("aaa");
+    cy.get("form button#sort").contains("Sortera").click();
+    cy.get("section#searchresult > div.movie > h3.movie__title")
+      .first()
+      .contains("tttt");
   });
 });
